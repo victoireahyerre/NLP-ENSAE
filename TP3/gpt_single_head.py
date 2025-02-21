@@ -66,8 +66,14 @@ class Head(nn.Module):
     def __init__(self, head_size):
         super().__init__()
         # YOUR CODE
+        C = n_embd
         # add you key, query and value definitions
-
+        # define the Key layer  
+        self.key = nn.Linear(C, head_size)
+        # define the Query layer
+        self.query = nn.Linear(C, head_size)
+        # define the Value layer
+        self.value =  nn.Linear(C, head_size)
         ###
         self.register_buffer('tril', torch.tril(torch.ones(block_size, block_size)))
 
@@ -76,9 +82,17 @@ class Head(nn.Module):
     def forward(self, x):
         B,T,C = x.shape
         ## YOUR CODE HERE
-
-        ###
-        out = weight @ v # (B, T, T) @ (B, T, C) -> (B, T, C)
+        # apply each layer to the input
+        k = self.key(x) # (B, T, head_size)
+        q = self.query(x) # (B, T, head_size)
+        v = self.value(x) # (B, T, head_size)
+        # compute the normalize product between Q and K
+        weights = q @ k.transpose(1,2) # (B, T, head_size) @ (B, 16, head_size) -> (B, T, T)
+        # apply the mask (lower triangular matrix)
+        weights = weights.masked_fill(self.tril[:T, :T] == 0, float('-inf'))
+        # apply the softmax
+        weights = nn.functional.softmax(weights, dim=-1)
+        out = weights @ v # (B, T, T) @ (B, T, C) -> (B, T, C)
         return out
 
 
