@@ -1,5 +1,7 @@
 # Multi-Label Fake News Detection with NLP using the OBSINFOX dataset
 
+Mini project for the ENSAE NLP course
+
 ## Structure
 
 The initial dataset as well as the modified ones are stored in the repository data.
