@@ -11,7 +11,7 @@ The code consist of 3 notebooks :
   * statistiques.ipynb : this file calculates some statistic on the dataset, including correlation between labels
   * model_and_train.ipynb : this file contains the code of the model to detect fake news
     
-The report is in the file report.pdf .
+The report is in the file report_AHYERRE.pdf .
 
 ## Authors
 
